@@ -32,7 +32,7 @@ yarn-error.log*
 .vercel
 
 # python
-__pycache__/
+__pycache__
 venv/
 
 # typescript

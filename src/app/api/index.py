@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api import todo, user
+from src.app.api.routes.main import api_router
 
 app = FastAPI(title="TodoChallenge API", version="0.1.0", description="API for the TodoChallenge")
 
@@ -18,7 +18,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/api/python")
-def hello_world():
-    return {"message": "Hello World"}
+app.include_router(api_router, prefix="/api/v1")
 
