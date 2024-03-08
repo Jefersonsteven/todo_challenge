@@ -1,18 +1,27 @@
+from src.app.api.models import (
+    UserLogin, 
+    UserGoogle, 
+    UserRegister
+)
 from fastapi import APIRouter
 
 router = APIRouter()
 
 
 @router.post("/login")
-async def login():
-    return # login user
+async def login(user: UserLogin):
+    return user # token session
+
+@router.post("/login-google")
+async def login_google(user: UserGoogle):
+    return 'has iniciado sesion con google' # token session
 
 
-@router.post("/logout")
-async def logout():
-    return # logout user
+@router.post("/logout/{id}")
+async def logout(id: str):
+    return f"{id}: se ha cerrado la sesión" # close session
 
 
-@router.post("/register")
-async def register():
-    return # register user
+@router.post("/signup")
+async def register(user: UserRegister):
+    return user # token session
