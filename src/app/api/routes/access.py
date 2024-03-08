@@ -3,14 +3,18 @@ from src.app.api.models import (
     UserGoogle, 
     UserRegister
 )
-from fastapi import APIRouter
+from fastapi import APIRouter, Response
+from src.app.api.utils.validators import validate_login, validate_signup
 
 router = APIRouter()
 
 
 @router.post("/login")
 async def login(user: UserLogin):
-    return user # token session
+    login = validate_login(user)
+    if login == True:
+        return user # token session
+    return Response(content=str(login), status_code=400) # error
 
 @router.post("/login-google")
 async def login_google(user: UserGoogle):
@@ -24,4 +28,7 @@ async def logout(id: str):
 
 @router.post("/signup")
 async def register(user: UserRegister):
-    return user # token session
+    signup = validate_signup(user)
+    if signup == True:
+        return user # token session
+    return Response(content=str(signup), status_code=400) # error

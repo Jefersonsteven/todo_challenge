@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from fastapi import Query
+from typing import Annotated
 import uuid
 
 class UserLogin(BaseModel):
