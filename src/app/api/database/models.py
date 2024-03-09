@@ -7,7 +7,7 @@ from .schemas import Level
 class User(Base):
     __tablename__ = 'users'
     
-    id = Column(UUID, primary_key=True)
+    id = Column(UUID, primary_key=True, unique=True)
     first_name = Column(String, index=True)
     last_name = Column(String)
     email = Column(String, unique=True, index=True)
@@ -20,7 +20,7 @@ class User(Base):
 class Todo(Base):
     __tablename__ = 'todos'
     
-    id = Column(UUID, primary_key=True)
+    id = Column(UUID, primary_key=True, unique=True)
     title = Column(String, index=True)
     description = Column(String)
     user_id = Column(UUID, ForeignKey('users.id'))
