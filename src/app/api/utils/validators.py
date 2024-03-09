@@ -1,7 +1,7 @@
 from email_validator import validate_email, EmailNotValidError
-from src.app.api.models import (
+from src.app.api.database.schemas import (
     UserLogin,
-    UserRegister
+    UserCreate
 )
 import re
 from typing import Union
@@ -44,7 +44,7 @@ def validate_login(user: UserLogin):
         return [email, password]
     
 # validate_signup: Valida que el email, la contraseña y el nombre y el apellido sean correctos
-def validate_signup(user: UserRegister):
+def validate_signup(user: UserCreate):
     email = validate_email_address(user.email)
     password = validate_password(user.password)
     first_name = validate_name(first_name=user.first_name)

@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 import uuid
-from src.app.api.models import UserUpdate
+from src.app.api.database.schemas import User
 
 router = APIRouter()
 
@@ -12,12 +12,12 @@ async def get_user(id: uuid.UUID):
     
 
 @router.put("/")
-async def update_user(user: UserUpdate, id: uuid.UUID):
+async def update_user(user: User, id: uuid.UUID):
     return user # token session
 
 
 @router.put("/deactivate/{id}")
-async def deactivate_user(user: UserUpdate, id: uuid.UUID):
+async def deactivate_user(user: User, id: uuid.UUID):
     return user # close session
 
     

@@ -1,8 +1,4 @@
-from src.app.api.models import (
-    UserLogin, 
-    UserGoogle, 
-    UserRegister
-)
+from src.app.api.database.schemas import UserCreate, UserLogin
 from fastapi import APIRouter, Response
 from src.app.api.utils.validators import validate_login, validate_signup
 
@@ -17,7 +13,7 @@ async def login(user: UserLogin):
     return Response(content=str(login), status_code=400) # error
 
 @router.post("/login-google")
-async def login_google(user: UserGoogle):
+async def login_google(user: UserLogin):
     return 'has iniciado sesion con google' # token session
 
 
@@ -27,7 +23,7 @@ async def logout(id: str):
 
 
 @router.post("/signup")
-async def register(user: UserRegister):
+async def register(user: UserCreate):
     signup = validate_signup(user)
     if signup == True:
         return user # token session
