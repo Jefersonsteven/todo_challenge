@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from enum import Enum
 from uuid import UUID
 from typing import Optional
 from datetime import datetime as DateTime
@@ -22,11 +21,6 @@ class User(UserCreate):
     
     class Config:
             orm_mode = True
-
-class Level(Enum):
-    LOW = 1
-    MEDIUM = 2
-    HIGH = 3
     
 class TodoBase(BaseModel):
     title: str

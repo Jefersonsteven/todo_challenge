@@ -1,6 +1,7 @@
 from src.app.api.database.schemas import UserCreate, UserLogin
 from fastapi import APIRouter, Response
 from src.app.api.utils.validators import validate_login, validate_signup
+from src.app.api.database import crud
 
 router = APIRouter()
 
@@ -26,5 +27,6 @@ async def logout(id: str):
 async def register(user: UserCreate):
     signup = validate_signup(user)
     if signup == True:
-        return user # token session
+        user = crud.create_user(user)
+        return user
     return Response(content=str(signup), status_code=400) # error

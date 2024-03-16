@@ -1,7 +1,11 @@
-from sqlalchemy import Column, Integer, String, UUID, Boolean, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, UUID, Boolean, DateTime, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 from .database import Base
-from .schemas import Level
+
+class LevelType(Enum):
+    low = 1
+    medium = 2
+    high = 3
 
 
 class User(Base):
@@ -27,7 +31,7 @@ class Todo(Base):
     completed = Column(Boolean, index=True)
     target_date = Column(DateTime, index=True)
     portrait = Column(String)
-    priority = Column(Level, index=True)
-    difficulty = Column(Level, index=True)
+    priority = Column(String, index=True)
+    difficulty = Column(String, index=True)
     
     user = relationship('User', back_populates='todos')
