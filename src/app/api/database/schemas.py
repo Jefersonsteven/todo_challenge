@@ -20,7 +20,7 @@ class User(UserCreate):
     is_active: bool
     
     class Config:
-            orm_mode = True
+            from_attributes = True
     
 class TodoBase(BaseModel):
     title: str
@@ -39,7 +39,7 @@ class Todo(TodoCreate):
     completed: bool
     
     class Config:
-        orm_mode = True
+        from_attributes = True
     
 
 
