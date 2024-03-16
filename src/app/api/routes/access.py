@@ -1,7 +1,7 @@
 from src.app.api.database.schemas import UserCreate, UserLogin
 from fastapi import APIRouter, Response
 from src.app.api.utils.validators import validate_login, validate_signup
-from src.app.api.database import crud
+from src.app.api.database import crud, main
 
 router = APIRouter()
 

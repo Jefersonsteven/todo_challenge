@@ -14,5 +14,6 @@ def get_db():
     finally:
         db.close()
         
-db_dependency = Annotated[Session, Depends(get_db)]
+## db_dependency = Annotated[Session, Depends(get_db)] # con este no funciona
+db_dependency = SessionLocal() # con este si funciona
 
