@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.app.api.routes.main import api_router
-# from .database.database import models # This is not needed as we are using Alembic to manage the database migrations
 
 app = FastAPI(title="TodoChallenge API", version="0.1.0", description="API for the TodoChallenge")
 

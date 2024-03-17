@@ -12,7 +12,8 @@ async def get_users():
 
 @router.get("/{id}")
 async def get_user(id: uuid.UUID):
-    return id # user
+    user = crud.get_user(id)
+    return user
     
 
 @router.put("/")

@@ -8,7 +8,7 @@ def get_users(skip: int = 0, limit: int = 100, db: Session = main.db_dependency)
     return db.query(models.User).offset(skip).limit(limit).all()
 
 
-def get_user(user_id: int, db: Session = main.db_dependency):
+def get_user(user_id: uuid.UUID, db: Session = main.db_dependency):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
 
@@ -32,10 +32,22 @@ def create_user(user: schemas.UserCreate, db: Session = main.db_dependency):
     db.refresh(db_user)
     return db_user
 
+def edit_user(user: schemas.User, db: Session = main.db_dependency):
+    db_user = db.query(models.User).filter(models.User.id == user.id).first()
+    db_user.first_name = user.first_name
+    db_user.last_name = user.last_name
+    db_user.email = user.email
+    db_user.hashed_password = user.hashed_password
+    db_user.photo = user.photo
+    db_user.score = user.score
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
 
 # * Todo CRUD
 
-def get_todos(skip: int = 0, limit: int = 100, user_id: int = None, db: Session = main.db_dependency):
+def get_todos(skip: int = 0, limit: int = 100, user_id: uuid.UUID = None, db: Session = main.db_dependency):
     if user_id is None:
         return db.query(models.Todo).offset(skip).limit(limit).all()
     return db.query(models.Todo).filter(models.Todo.user_id == user_id).offset(skip).limit(limit).all()
@@ -43,14 +55,14 @@ def get_todos(skip: int = 0, limit: int = 100, user_id: int = None, db: Session 
 def get_todo_by_title(title: str, db: Session = main.db_dependency):
     return db.query(models.Todo).filter(models.Todo.title == title).first()
 
-def create_todo(todo: schemas.TodoCreate, user_id: int, db: Session = main.db_dependency):
+def create_todo(todo: schemas.TodoCreate, user_id: uuid.UUID, db: Session = main.db_dependency):
     db_todo = models.Todo(**dict(todo), user_id=user_id)
     db.add(db_todo)
     db.commit()
     db.refresh(db_todo)
     return db_todo
 
-def edit_todo(todo: schemas.Todo, user_id: int, db: Session = main.db_dependency):
+def edit_todo(todo: schemas.Todo, user_id: uuid.UUID, db: Session = main.db_dependency):
     db_todo = db.query(models.Todo).filter(models.Todo.id == todo.id).first()
     db_todo.title = todo.title
     db_todo.description = todo.description
@@ -61,6 +73,12 @@ def edit_todo(todo: schemas.Todo, user_id: int, db: Session = main.db_dependency
     db_todo.difficulty = todo.difficulty
     db.commit()
     db.refresh(db_todo)
+    return db_todo
+
+def delete_todo(todo_id: uuid.UUID, db: Session = main.db_dependency):
+    db_todo = db.query(models.Todo).filter(models.Todo.id == todo_id).first()
+    db.delete(db_todo)
+    db.commit()
     return db_todo
 
 

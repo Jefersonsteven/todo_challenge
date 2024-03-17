@@ -1,7 +1,7 @@
 from src.app.api.database.schemas import UserCreate, UserLogin
 from fastapi import APIRouter, Response
 from src.app.api.utils.validators import validate_login, validate_signup
-from src.app.api.database import crud, main
+from src.app.api.database import crud
 
 router = APIRouter()
 
@@ -10,12 +10,14 @@ router = APIRouter()
 async def login(user: UserLogin):
     login = validate_login(user)
     if login == True:
-        return user # token session
+        user = crud.get_user_by_email(user.email)
+        return user # TODO: token session
     return Response(content=str(login), status_code=400) # error
 
 @router.post("/login-google")
 async def login_google(user: UserLogin):
-    return 'has iniciado sesion con google' # token session
+    user = crud.get_user_by_email(user.email)
+    return user # TODO: token session
 
 
 @router.post("/logout/{id}")
@@ -29,4 +31,4 @@ async def register(user: UserCreate):
     if signup == True:
         user = crud.create_user(user)
         return user
-    return Response(content=str(signup), status_code=400) # error
+    return Response(content=str(signup), status_code=400)
