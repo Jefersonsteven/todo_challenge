@@ -37,11 +37,16 @@ def edit_user(user: schemas.User, db: Session = main.db_dependency):
     db_user.first_name = user.first_name
     db_user.last_name = user.last_name
     db_user.email = user.email
-    db_user.hashed_password = user.hashed_password
     db_user.photo = user.photo
     db_user.score = user.score
     db.commit()
     db.refresh(db_user)
+    return db_user
+
+def delete_user(user_id: uuid.UUID, db: Session = main.db_dependency):
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
+    db.delete(db_user)
+    db.commit()
     return db_user
 
 

@@ -26,4 +26,4 @@ async def update_todo(todo: schemas.Todo, id: int):
 @router.delete("/{id}")
 async def delete_todo(id: uuid.UUID):
     todo = crud.delete_todo(id)
-    return # deleted todo
+    return todo # deleted todo

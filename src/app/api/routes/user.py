@@ -18,14 +18,11 @@ async def get_user(id: uuid.UUID):
 
 @router.put("/")
 async def update_user(user: User, id: uuid.UUID):
+    user = crud.edit_user(user)
     return user # token session
-
-
-@router.put("/deactivate/{id}")
-async def deactivate_user(user: User, id: uuid.UUID):
-    return user # close session
 
     
 @router.delete("/{id}")
 async def delete_user(id: uuid.UUID):
-    return id # close session
+    user = crud.delete_user(id)
+    return user # close session
