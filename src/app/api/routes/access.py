@@ -2,28 +2,36 @@ from src.app.api.database.schemas import UserCreate, UserLogin
 from fastapi import APIRouter, HTTPException
 from src.app.api.utils.validators import validate_login, validate_signup
 from src.app.api.database import crud
+from ..utils.password import authenticate_user
+import uuid
 
 router = APIRouter()
 
 
 @router.post("/login")
 async def login(user: UserLogin):
-    validate_login = validate_login(user)
-    user = crud.get_user_by_email(user.email)
-    if validate_login == True and user: # TODO: validate password
-        return user # TODO: token session
-    raise HTTPException(status_code=404, detail={"message": 'User not found', "content": str(login)}) # error
+    is_validate_login = validate_login(user)
+    auth_user = authenticate_user(user.email, user.password)
+    if is_validate_login != True:
+        raise HTTPException(status_code=404, detail={"message": str(is_validate_login)})
+    elif type(auth_user) == str:
+        raise HTTPException(status_code=400, detail={"message": str(auth_user)})
+    return auth_user
+
 
 @router.post("/login-google")
 async def login_google(user: UserLogin):
-    validate_login = validate_login(user)
-    user = crud.get_user_by_email(user.email)
-    if validate_login == True and user: # TODO: validate password
-        return user # TODO: token session
-    elif not user:
-        user = crud.create_user(user)
-        return user # TODO: token session
-    raise HTTPException(status_code=404, detail={"message": 'User not found', "content": str(login)}) # error
+    is_validate_login = validate_login(user)
+    auth_user = authenticate_user(user.email, user.password)
+    if is_validate_login != True:
+        raise HTTPException(status_code=404, detail={"message": str(is_validate_login)})
+    elif type(auth_user) == str:
+        raise HTTPException(status_code=400, detail={"message": str(auth_user)})
+    elif auth_user == 'User not found':
+        random_password = uuid.uuid4().hex
+        new_user = UserCreate(email=user.email, password=random_password, first_name=user.email, last_name=user.email)
+        user = crud.create_user(new_user)
+        return user  # TODO: token session
 
 
 @router.post("/logout/{id}")

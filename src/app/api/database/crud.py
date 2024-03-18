@@ -2,6 +2,7 @@ from . import models, schemas, main
 from sqlalchemy.orm import Session
 import uuid
 from typing import Union
+from ..utils.password import get_password_hash
 
 # * User CRUD
 
@@ -18,7 +19,7 @@ def get_user_by_email(email: str, db: Session = main.db_dependency):
 
 
 def create_user(user: schemas.UserCreate, db: Session = main.db_dependency):
-    hashed_password = user.password + "notreallyhashed" #TODO:: Hash the password
+    hashed_password = get_password_hash(user.password)
     db_user = models.User(
         id= uuid.uuid4(),
         email=user.email, 
