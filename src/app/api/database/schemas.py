@@ -17,7 +17,6 @@ class User(UserCreate):
     id: UUID
     photo: str
     score: int
-    is_active: bool
     
     class Config:
             from_attributes = True

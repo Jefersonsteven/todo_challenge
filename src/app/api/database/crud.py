@@ -1,6 +1,7 @@
 from . import models, schemas, main
 from sqlalchemy.orm import Session
 import uuid
+from typing import Union
 
 # * User CRUD
 
@@ -52,7 +53,7 @@ def delete_user(user_id: uuid.UUID, db: Session = main.db_dependency):
 
 # * Todo CRUD
 
-def get_todos(skip: int = 0, limit: int = 100, user_id: uuid.UUID = None, db: Session = main.db_dependency):
+def get_todos(skip: int = 0, limit: int = 100, user_id: Union[uuid.UUID | None] = None, db: Session = main.db_dependency):
     if user_id is None:
         return db.query(models.Todo).offset(skip).limit(limit).all()
     return db.query(models.Todo).filter(models.Todo.user_id == user_id).offset(skip).limit(limit).all()

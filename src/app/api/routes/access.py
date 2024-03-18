@@ -1,5 +1,5 @@
 from src.app.api.database.schemas import UserCreate, UserLogin
-from fastapi import APIRouter, Response
+from fastapi import APIRouter, HTTPException
 from src.app.api.utils.validators import validate_login, validate_signup
 from src.app.api.database import crud
 
@@ -8,16 +8,22 @@ router = APIRouter()
 
 @router.post("/login")
 async def login(user: UserLogin):
-    login = validate_login(user)
-    if login == True:
-        user = crud.get_user_by_email(user.email)
+    validate_login = validate_login(user)
+    user = crud.get_user_by_email(user.email)
+    if validate_login == True and user: # TODO: validate password
         return user # TODO: token session
-    return Response(content=str(login), status_code=400) # error
+    raise HTTPException(status_code=404, detail={"message": 'User not found', "content": str(login)}) # error
 
 @router.post("/login-google")
 async def login_google(user: UserLogin):
+    validate_login = validate_login(user)
     user = crud.get_user_by_email(user.email)
-    return user # TODO: token session
+    if validate_login == True and user: # TODO: validate password
+        return user # TODO: token session
+    elif not user:
+        user = crud.create_user(user)
+        return user # TODO: token session
+    raise HTTPException(status_code=404, detail={"message": 'User not found', "content": str(login)}) # error
 
 
 @router.post("/logout/{id}")
@@ -31,4 +37,4 @@ async def register(user: UserCreate):
     if signup == True:
         user = crud.create_user(user)
         return user
-    return Response(content=str(signup), status_code=400)
+    raise HTTPException(status_code=400, detail=str(signup))
