@@ -1,11 +1,6 @@
 from passlib.context import CryptContext
-from decouple import config
 from ..database import crud, schemas
 from typing import Union
-
-SECRET_KEY = config('SECRET_KEY')
-ALGORITHM = config('ALGORITHM')
-ACCESS_TOKEN_EXPIRE_MINUTES = config('ACCESS_TOKEN_EXPIRE_MINUTES')
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
