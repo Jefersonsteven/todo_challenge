@@ -2,7 +2,7 @@ from . import models, schemas, main
 from sqlalchemy.orm import Session
 import uuid
 from typing import Union
-from ..utils.password import get_password_hash
+from ..core.security import get_password_hash
 
 # * User CRUD
 

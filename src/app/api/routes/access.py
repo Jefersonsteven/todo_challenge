@@ -2,7 +2,7 @@ from src.app.api.database.schemas import UserCreate, UserLogin
 from fastapi import APIRouter, HTTPException
 from src.app.api.utils.validators import validate_login, validate_signup
 from src.app.api.database import crud
-from ..utils.password import authenticate_user
+from ..core.security import authenticate_user
 import uuid
 
 router = APIRouter()
