@@ -3,6 +3,7 @@ from src.app.api.database.schemas import (
     UserLogin,
     UserCreate
 )
+from fastapi.security import  OAuth2PasswordRequestForm
 import re
 from typing import Union
 
@@ -35,8 +36,8 @@ def validate_name(first_name: Union[str | None] = None, last_name: Union[str | N
         return True
     
 # validate_login: Valida que el email y la contraseña sean correctos
-def validate_login(user: UserLogin):
-    email = validate_email_address(user.email)
+def validate_login(user: OAuth2PasswordRequestForm): # 
+    email = validate_email_address(user.username)
     password = validate_password(user.password)
     if email == True and password == True:
         return True

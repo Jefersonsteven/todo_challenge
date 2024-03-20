@@ -1,8 +1,17 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from src.app.api.routes.main import api_router
+from typing import Annotated
+from fastapi.security import  OAuth2PasswordRequestForm
+from .auth.encode import create_access_token
+from .core.security import authenticate_user
+from .utils.validators import validate_login
 
-app = FastAPI(title="TodoChallenge API", version="0.1.0", description="API for the TodoChallenge")
+app = FastAPI(
+    title="TodoChallenge API", 
+    version="0.1.0", 
+    description="API for the TodoChallenge"
+)
 
 origins = [
     "http://localhost",

@@ -1,22 +1,27 @@
 from src.app.api.database.schemas import UserCreate, UserLogin
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, FastAPI
 from src.app.api.utils.validators import validate_login, validate_signup
 from src.app.api.database import crud
 from ..core.security import authenticate_user
+from fastapi.security import  OAuth2PasswordRequestForm
+from typing import Annotated
+from fastapi import Depends
+from ..auth.main import User
 import uuid
+from ..auth.encode import create_access_token
 
 router = APIRouter()
 
-
 @router.post("/login")
-async def login(user: UserLogin):
-    is_validate_login = validate_login(user)
-    auth_user = authenticate_user(user.email, user.password)
+async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
+    is_validate_login = validate_login(form_data)
+    auth_user = authenticate_user(form_data.username, form_data.password)
     if is_validate_login != True:
         raise HTTPException(status_code=404, detail={"message": str(is_validate_login)})
     elif type(auth_user) == str:
         raise HTTPException(status_code=400, detail={"message": str(auth_user)})
-    return auth_user
+    token = create_access_token(auth_user)
+    return token
 
 
 @router.post("/login-google")

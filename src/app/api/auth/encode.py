@@ -2,15 +2,10 @@ from decouple import config
 from jose import JWTError, jwt
 from pydantic import BaseModel
 from datetime import datetime, timedelta, timezone
-from typing import Annotated
 
 SECRET_KEY = config('SECRET_KEY')
 ALGORITHM = config('ALGORITHM')
 ACCESS_TOKEN_EXPIRE_MINUTES = config('ACCESS_TOKEN_EXPIRE_MINUTES')
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
     
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
