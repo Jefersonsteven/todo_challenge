@@ -10,7 +10,7 @@ router = APIRouter()
 @router.get("/")
 async def get_users(current_user: Annotated[str, Depends(get_current_user)]):
     users = crud.get_users()
-    return users    
+    return users
 
 @router.get("/{id}")
 async def get_user(id: uuid.UUID):

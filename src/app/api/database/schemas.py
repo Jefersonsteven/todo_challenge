@@ -18,6 +18,13 @@ class User(UserCreate):
     photo: str
     score: int
     
+class UserAuth(UserBase):
+    id: UUID
+    first_name: str
+    last_name: str
+    photo: str
+    score: int
+    
     class Config:
             from_attributes = True
     
@@ -40,6 +47,10 @@ class Todo(TodoCreate):
     class Config:
         from_attributes = True
     
+    
+class Token(BaseModel):
+    access_token: str
+    token_type: str
 
 
     

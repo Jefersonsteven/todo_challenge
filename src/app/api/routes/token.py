@@ -8,12 +8,9 @@ from ..auth.encode import create_access_token
 from pydantic import BaseModel
 from datetime import timedelta
 from decouple import config
+from ..database.schemas import Token
 
 router = APIRouter()
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
     
 ACCESS_TOKEN_EXPIRE_MINUTES = config('ACCESS_TOKEN_EXPIRE_MINUTES')
 
@@ -27,6 +24,6 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> T
         raise HTTPException(status_code=401, detail={"message": str(auth_user)})
     
     access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
-    access_token = create_access_token(data={"sub": auth_user}, expires_delta=access_token_expires)
+    access_token = create_access_token(auth_user.email, auth_user.id, access_token_expires)
     
     return Token(access_token=access_token, token_type="bearer")

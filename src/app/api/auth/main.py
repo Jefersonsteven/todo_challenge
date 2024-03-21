@@ -11,10 +11,6 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/token")
 class User(BaseModel):
     username: str
     password: str
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
     
 class TokenData(BaseModel):
     username: str | None = None
@@ -32,7 +28,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
         if username is None:
             raise credencials_exception
         token_data = TokenData(username=username)
-    except JWTError:
+    except JWTError as e:
         raise credencials_exception
     user = get_user_by_email(token_data.username)
     if user is None:

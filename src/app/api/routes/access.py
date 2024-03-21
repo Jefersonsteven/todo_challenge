@@ -12,18 +12,6 @@ from ..auth.encode import create_access_token
 
 router = APIRouter()
 
-@router.post("/login")
-async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
-    is_validate_login = validate_login(form_data)
-    auth_user = authenticate_user(form_data.username, form_data.password)
-    if is_validate_login != True:
-        raise HTTPException(status_code=404, detail={"message": str(is_validate_login)})
-    elif type(auth_user) == str:
-        raise HTTPException(status_code=400, detail={"message": str(auth_user)})
-    token = create_access_token(auth_user)
-    return token
-
-
 @router.post("/login-google")
 async def login_google(user: UserLogin):
     is_validate_login = validate_login(user)
