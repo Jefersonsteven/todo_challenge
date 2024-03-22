@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 import uuid
 from typing import Union
 from ..core.security import get_password_hash
+from datetime import datetime, timezone
 
 # * User CRUD
 
@@ -27,7 +28,9 @@ def create_user(user: schemas.UserCreate, db: Session = main.db_dependency):
         first_name=user.first_name,
         last_name=user.last_name,
         photo= "none",
-        score= 0
+        score= 0,
+        created_at= datetime.now(timezone.utc),
+        updated_at= datetime.now(timezone.utc),
     )
     db.add(db_user)
     db.commit()
@@ -41,6 +44,7 @@ def edit_user(user: schemas.User, db: Session = main.db_dependency):
     db_user.email = user.email
     db_user.photo = user.photo
     db_user.score = user.score
+    db_user.updated_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(db_user)
     return db_user
@@ -67,6 +71,7 @@ def create_todo(todo: schemas.TodoCreate, user_id: uuid.UUID, db: Session = main
     new_todo["id"] = uuid.uuid4()
     new_todo["user_id"] = user_id
     new_todo["completed"] = False
+    new_todo["created_at"] = datetime.now(timezone.utc)
     db_todo = models.Todo(**dict(new_todo))
     db.add(db_todo)
     db.commit()
