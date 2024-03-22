@@ -1,16 +1,20 @@
 from src.app.api.database.schemas import UserCreate, UserLogin
-from fastapi import APIRouter, HTTPException, FastAPI
+from fastapi import APIRouter, HTTPException
 from src.app.api.utils.validators import validate_login, validate_signup
 from src.app.api.database import crud
 from ..core.security import authenticate_user
 from fastapi.security import  OAuth2PasswordRequestForm
 from typing import Annotated
 from fastapi import Depends
-from ..auth.main import User
 import uuid
 from ..auth.encode import create_access_token
+from datetime import timedelta
+from decouple import config
+from ..database.schemas import Token
 
 router = APIRouter()
+
+ACCESS_TOKEN_EXPIRE_MINUTES = config('ACCESS_TOKEN_EXPIRE_MINUTES')
 
 @router.post("/login-google")
 async def login_google(user: UserLogin):
@@ -27,11 +31,6 @@ async def login_google(user: UserLogin):
         return user  # TODO: token session
 
 
-@router.post("/logout/{id}")
-async def logout(id: str):
-    return f"{id}: se ha cerrado la sesión" # close session
-
-
 @router.post("/signup")
 async def register(user: UserCreate):
     signup = validate_signup(user)
@@ -39,3 +38,17 @@ async def register(user: UserCreate):
         user = crud.create_user(user)
         return user
     raise HTTPException(status_code=400, detail=str(signup))
+
+@router.post("/login")
+async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> Token:
+    is_validate_login = validate_login(form_data)
+    auth_user = authenticate_user(form_data.username, form_data.password)
+    if is_validate_login != True:
+        raise HTTPException(status_code=404, detail={"message": str(is_validate_login)})
+    elif type(auth_user) == str:
+        raise HTTPException(status_code=401, detail={"message": str(auth_user)})
+    
+    access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
+    access_token = create_access_token(auth_user.email, auth_user.id, access_token_expires)
+    
+    return Token(access_token=access_token, token_type="bearer")

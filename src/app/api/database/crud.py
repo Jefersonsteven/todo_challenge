@@ -63,7 +63,11 @@ def get_todo_by_title(title: str, db: Session = main.db_dependency):
     return db.query(models.Todo).filter(models.Todo.title == title).first()
 
 def create_todo(todo: schemas.TodoCreate, user_id: uuid.UUID, db: Session = main.db_dependency):
-    db_todo = models.Todo(**dict(todo), user_id=user_id)
+    new_todo = dict(todo)
+    new_todo["id"] = uuid.uuid4()
+    new_todo["user_id"] = user_id
+    new_todo["completed"] = False
+    db_todo = models.Todo(**dict(new_todo))
     db.add(db_todo)
     db.commit()
     db.refresh(db_todo)

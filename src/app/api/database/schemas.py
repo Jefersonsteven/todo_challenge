@@ -34,7 +34,6 @@ class TodoBase(BaseModel):
     
     
 class TodoCreate(TodoBase):
-    user_id: UUID
     portrait: Optional[str]
     priority: int
     difficulty: int

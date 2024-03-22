@@ -6,7 +6,7 @@ from typing import Annotated
 from ..database.crud import get_user_by_email
 from jose import JWTError
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/access/login")
 
 class User(BaseModel):
     username: str
