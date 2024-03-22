@@ -18,6 +18,9 @@ class User(Base):
     hashed_password = Column(String)
     photo = Column(String)
     score = Column(Integer, index=True)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, index=True)
+    updated_at = Column(DateTime)
     
     todos = relationship('Todo', back_populates='user')
     
@@ -33,5 +36,6 @@ class Todo(Base):
     portrait = Column(String)
     priority = Column(String, index=True)
     difficulty = Column(String, index=True)
+    created_at = Column(DateTime)
     
     user = relationship('User', back_populates='todos')
