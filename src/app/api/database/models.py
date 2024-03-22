@@ -18,6 +18,7 @@ class User(Base):
     hashed_password = Column(String)
     photo = Column(String)
     score = Column(Integer, index=True)
+    verified = Column(Boolean, default=False)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, index=True)
     updated_at = Column(DateTime)
