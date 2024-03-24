@@ -31,8 +31,8 @@ interface TodoBase {
 
 interface TodoCreate extends TodoBase {
   portrait: string;
-  priority: number;
-  difficulty: number;
+  priority: Priority;
+  difficulty: Difficulty;
   target_date: Date;
 }
 
@@ -42,3 +42,30 @@ interface Todo extends TodoCreate {
 }
 
 type Todos = Todo[];
+
+enum Priority {
+  Low = 1,
+  Medium = 2,
+  High = 3,
+}
+
+enum Difficulty {
+  Easy = 1,
+  Medium = 2,
+  Hard = 3,
+}
+
+export {
+  UserBase,
+  UserLogin,
+  UserCreate,
+  User,
+  Users,
+  TodoBase,
+  TodoCreate,
+  Todo,
+  Todos,
+  Priority,
+  Difficulty,
+  uuid,
+};

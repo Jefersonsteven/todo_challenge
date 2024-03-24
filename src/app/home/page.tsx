@@ -4,6 +4,7 @@ import { Header } from "@/components/Header"
 import AddIcon from '@mui/icons-material/Add';
 import { Box, Button, Modal } from "@mui/material";
 import { useState } from "react";
+import '@/app/styles/animations/animations.css'
 
 const HomePage: React.FC = () => {
     const [firstname, lastname] = ['John', 'Doe']
@@ -19,14 +20,14 @@ const HomePage: React.FC = () => {
                 <div className="w-full flex justify-end">
                     <Button
                         onClick={() => setOpenFormTodo(true)}
-                        className="flex gap-2 px-6 py-4 bg-gray-800 w-fit h-fit rounded-full justify-center text-white hover:text-gray-800"
+                        className="flex gap-2"
                     >
                         Create New Todochallenge
                         <AddIcon />
                     </Button>
                 </div>
 
-                {/* Todos component is used here */}
+                {/* TODO: Todos component is used here */}
             </main>
 
             {/* Modals */}
@@ -37,16 +38,16 @@ const HomePage: React.FC = () => {
                 onClose={() => setOpenFormTodo(false)}
                 aria-labelledby="Crear Todo Challenge"
                 aria-describedby="formulario para crear un todo challenge"
-                className="flex justify-center items-center backdrop-blur-sm"
+                className="flex justify-center items-start backdrop-blur-sm"
             >
-                <Box className=" w-96 h-96 bg-slate-900 rounded-3xl">
-                    <TodoForm />
+                <Box className=" p-8 bg-stone-50 rounded-b-3xl animate-slide-up">
+                    <TodoForm closeForm={setOpenFormTodo} />
                 </Box>
             </Modal>
 
-            {/* DetailTodo component modal is used here */}
+            {/* TODO: DetailTodo component modal is used here */}
 
-            {/* EditProfile component modal is used here */}
+            {/* TODO: EditProfile component modal is used here */}
         </>
     )
 }
