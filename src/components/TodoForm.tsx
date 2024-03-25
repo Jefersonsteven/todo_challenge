@@ -4,18 +4,21 @@ import { Difficulty, Priority, TodoCreate } from "@/types"
 
 interface Props {
     closeForm: Dispatch<SetStateAction<boolean>>
+    todoForm?: TodoCreate
 }
 
 
-export const TodoForm: React.FC<Props> = ({ closeForm }) => {
-    const [form, setForm] = useState<TodoCreate>({
-        title: '',
-        description: '',
-        priority: 1,
-        difficulty: 1,
-        target_date: new Date(),
-        portrait: ''
-    })
+const newTodo: TodoCreate = {
+    title: '',
+    description: '',
+    priority: 1,
+    difficulty: 1,
+    target_date: new Date(),
+    portrait: ''
+}
+
+export const TodoForm: React.FC<Props> = ({ closeForm, todoForm }) => {
+    const [form, setForm] = useState<TodoCreate>(todoForm || newTodo)
 
     const handleSumbit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -52,6 +55,12 @@ export const TodoForm: React.FC<Props> = ({ closeForm }) => {
 
     return (
         <form className="flex flex-col" onSubmit={handleSumbit}>
+            {todoForm ?
+                <h2 className=" text-2xl font-bold">Edit Todochallenge</h2>
+                :
+                <h2 className=" text-2xl font-bold">Create new Todochallenge</h2>
+            }
+
             <TextField
                 value={form.title}
                 id="title"
