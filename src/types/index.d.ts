@@ -2,13 +2,15 @@ type uuid = "0000-0000-0000-0000";
 
 interface UserBase {
   email: string;
-}
-
-interface UserLogin extends UserBase {
   password: string;
 }
 
-interface UserCreate extends UserLogin {
+interface UserLogin {
+  username: string;
+  password: string;
+}
+
+interface UserCreate extends UserBase {
   first_name: string;
   last_name: string;
 }

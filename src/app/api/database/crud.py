@@ -4,6 +4,7 @@ import uuid
 from typing import Union
 from ..core.security import get_password_hash
 from datetime import datetime, timezone
+from fastapi import HTTPException
 
 # * User CRUD
 
@@ -21,21 +22,27 @@ def get_user_by_email(email: str, db: Session = main.db_dependency):
 
 def create_user(user: schemas.UserCreate, db: Session = main.db_dependency):
     hashed_password = get_password_hash(user.password)
-    db_user = models.User(
-        id= uuid.uuid4(),
-        email=user.email, 
-        hashed_password=hashed_password,
-        first_name=user.first_name,
-        last_name=user.last_name,
-        photo= "none",
-        score= 0,
-        created_at= datetime.now(timezone.utc),
-        updated_at= datetime.now(timezone.utc),
-    )
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
+    print(user.email, user.first_name, user.last_name, hashed_password)
+    try:
+        db_user = models.User(
+            id= uuid.uuid4(),
+            email=user.email, 
+            hashed_password=hashed_password,
+            first_name=user.first_name,
+            last_name=user.last_name,
+            photo= "none",
+            score= 0,
+            created_at= datetime.now(timezone.utc),
+            updated_at= datetime.now(timezone.utc),
+        )
+        
+        db.add(db_user)
+        db.commit()
+        db.refresh(db_user)
+        return db_user
+    except Exception:
+        raise HTTPException(status_code=400, detail="User already exists")
+        
 
 def edit_user(user: schemas.User, db: Session = main.db_dependency):
     db_user = db.query(models.User).filter(models.User.id == user.id).first()
