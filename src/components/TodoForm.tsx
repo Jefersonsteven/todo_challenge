@@ -55,11 +55,11 @@ export const TodoForm: React.FC<Props> = ({ closeForm, todoForm }) => {
 
     return (
         <form className="flex flex-col" onSubmit={handleSumbit}>
-            {todoForm ?
-                <h2 className=" text-2xl font-bold">Edit Todochallenge</h2>
-                :
-                <h2 className=" text-2xl font-bold">Create new Todochallenge</h2>
-            }
+
+            <h2 className=" text-2xl font-bold">
+                {todoForm ? 'Edit Todochallenge' : 'Create new Todochallenge'}
+            </h2>
+
 
             <TextField
                 value={form.title}
@@ -123,10 +123,11 @@ export const TodoForm: React.FC<Props> = ({ closeForm, todoForm }) => {
                 </FormControl>
             </div>
 
-            <Button
-                type="submit"
-                className="flex gap-2"
-            >Create Todo</Button>
+
+            <Button type="submit" className="flex gap-2">
+                {todoForm ? 'Edit Todo' : 'Create Todo'}
+            </Button>
+
         </form>
     )
 }
