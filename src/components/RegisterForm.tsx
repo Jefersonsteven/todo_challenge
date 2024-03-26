@@ -33,6 +33,7 @@ export const RegisterForm = ({
 
     return (
         <form onSubmit={handleSubmit} className=" p-4 flex flex-col gap-4 bg-">
+            <h2 className=" text-2xl font-bold">• Register here!</h2>
             <TextField
                 type="email"
                 name='email'

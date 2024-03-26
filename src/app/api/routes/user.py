@@ -13,8 +13,12 @@ async def get_users(current_user: Annotated[str, Depends(get_current_user)]):
     return users
 
 @router.get("/{id}")
-async def get_user(id: uuid.UUID, current_user: Annotated[str, Depends(get_current_user)]):
-    user = crud.get_user(id)
+async def get_user(id: uuid.UUID | str, current_user: Annotated[str, Depends(get_current_user)]):
+    if(type(id) == str):
+        user = crud.get_user_by_email(id)
+    else:
+        user = crud.get_user(id)
+        
     if user is None:
         raise HTTPException(status_code=404, detail='User not found')
     return user
