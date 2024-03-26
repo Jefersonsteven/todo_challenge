@@ -11,6 +11,7 @@ from ..auth.encode import create_access_token
 from datetime import timedelta
 from decouple import config
 from ..database.schemas import Token
+from ..auth.main import get_current_user
 
 router = APIRouter()
 
@@ -40,7 +41,7 @@ async def register(user: UserCreate):
     raise HTTPException(status_code=400, detail=str(signup))
 
 @router.post("/login")
-async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> Token:
+async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     is_validate_login = validate_login(form_data)
     auth_user = authenticate_user(form_data.username, form_data.password)
     if is_validate_login != True:
@@ -51,4 +52,19 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> T
     access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
     access_token = create_access_token(auth_user.email, auth_user.id, access_token_expires)
     
-    return Token(access_token=access_token, token_type="bearer")
+    return {'user': auth_user, 'token': Token(access_token=access_token, token_type="bearer")}
+
+@router.post("/verify")
+async def verify(current_user: Annotated[str, Depends(get_current_user)]):
+    return {
+        "id": current_user.id,
+        "email": current_user.email,
+        "first_name": current_user.first_name,
+        "last_name": current_user.last_name,
+        "photo": current_user.photo,
+        "is_active": current_user.is_active,
+        "score": current_user.score,
+        "verified": current_user.verified,
+        "created_at": current_user.created_at,
+        "updated_at": current_user.updated_at
+    }

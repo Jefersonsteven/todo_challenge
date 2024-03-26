@@ -4,6 +4,8 @@ import { UserLogin } from "@/types";
 import { validateLoginForm } from "@/utils/validateForms";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Cookies from 'js-cookie'
+
 
 const LoginPage = () => {
     const router = useRouter()
@@ -29,27 +31,36 @@ const LoginPage = () => {
             formData.append('client_id', '')
             formData.append('client_secret', '')
 
-            const data = await fetch('/api/v1/access/login', {
+            const response = await fetch('/api/v1/access/login', {
                 method: 'POST',
                 body: formData
             })
-            const user = await data.json()
+            const data = await response.json()
 
-            if (user.detail?.message === 'User not found') {
+            if (data.detail?.message === 'User not found') {
                 setErrors({
                     ...errors,
-                    username: user.detail.message
+                    username: data.detail.message
                 })
-            } else if (user.detail?.message === 'Password incorrect') {
+            } else if (data.detail?.message === 'Password incorrect') {
                 setErrors({
                     ...errors,
-                    password: user.detail.message
+                    password: data.detail.message
                 })
             } else {
-                localStorage.setItem('access_token', JSON.stringify({
-                    ...user,
+                // save token in cookie
+                console.log(data);
+
+                Cookies.set('token', JSON.stringify({
+                    token: data.token.access_token,
                     user: form.username
-                }))
+                }), {
+                    expires: 1,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'strict'
+                })
+                // save user in local storage
+                localStorage.setItem('user', JSON.stringify(data.user))
                 router.push('/home')
             }
         }

@@ -18,7 +18,6 @@ async def get_user(id: uuid.UUID | str, current_user: Annotated[str, Depends(get
         user = crud.get_user_by_email(id)
     else:
         user = crud.get_user(id)
-        
     if user is None:
         raise HTTPException(status_code=404, detail='User not found')
     return user
