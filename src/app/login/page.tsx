@@ -48,9 +48,7 @@ const LoginPage = () => {
                     password: data.detail.message
                 })
             } else {
-                // save token in cookie
-                console.log(data);
-
+                // save token in cookies
                 Cookies.set('token', JSON.stringify({
                     token: data.token.access_token,
                     user: form.username
