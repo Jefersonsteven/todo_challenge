@@ -46,10 +46,10 @@ const LoginPage = () => {
                     password: user.detail.message
                 })
             } else {
-                localStorage.setItem('access_token', {
+                localStorage.setItem('access_token', JSON.stringify({
                     ...user,
                     user: form.username
-                })
+                }))
                 router.push('/home')
             }
         }

@@ -1,6 +1,6 @@
-import { uuid } from "@/types";
+import { User } from "@/types";
 
-const getUser = async (email: string, token: string) => {
+const getUser = async (email: string, token: string): Promise<User> => {
   const response = await fetch(`/api/v1/users/${email}`, {
     method: "GET",
     headers: {
@@ -9,10 +9,9 @@ const getUser = async (email: string, token: string) => {
     },
   });
 
-  const data = await response.json();
-  console.log(data);
+  const user = await response.json();
 
-  return data;
+  return user;
 };
 
 export { getUser };
