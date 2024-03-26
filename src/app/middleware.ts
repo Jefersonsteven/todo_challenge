@@ -9,5 +9,6 @@ export function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: "/about/:path*",
+  // Aqui se configura el path que se va a redirigir
+  matcher: ["/login", "/", "/home", "/signup"],
 };
