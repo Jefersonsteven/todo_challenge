@@ -52,19 +52,24 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
     access_token = create_access_token(auth_user.email, auth_user.id, access_token_expires)
     
-    return {'user': auth_user, 'token': Token(access_token=access_token, token_type="bearer")}
+    return {
+        'user': {
+            "id": auth_user.id,
+            "email": auth_user.email,
+            "first_name": auth_user.first_name,
+            "last_name": auth_user.last_name,
+            "photo": auth_user.photo,
+            "is_active": auth_user.is_active,
+            "score": auth_user.score,
+            "verified": auth_user.verified,
+            "created_at": auth_user.created_at,
+            "updated_at": auth_user.updated_at
+        }, 
+        'token': Token(access_token=access_token, token_type="bearer")
+    }
 
 @router.post("/verify")
 async def verify(current_user: Annotated[str, Depends(get_current_user)]):
     return {
-        "id": current_user.id,
-        "email": current_user.email,
-        "first_name": current_user.first_name,
-        "last_name": current_user.last_name,
-        "photo": current_user.photo,
-        "is_active": current_user.is_active,
-        "score": current_user.score,
-        "verified": current_user.verified,
-        "created_at": current_user.created_at,
-        "updated_at": current_user.updated_at
+        "email": current_user.email
     }
