@@ -1,5 +1,5 @@
 import { UserCreate } from "@/types";
-import { validateRegisterForm } from "@/utils/validateForms";
+import { validateRegisterForm } from "@/utils/validateAccessForms";
 import { Button, TextField } from "@mui/material";
 import { Dispatch } from "react";
 

@@ -1,7 +1,7 @@
 'use client'
 import { RegisterForm } from "@/components/RegisterForm";
 import { UserCreate, UserLogin } from "@/types";
-import { validateLoginForm, validateRegisterForm } from "@/utils/validateForms";
+import { validateLoginForm, validateRegisterForm } from "@/utils/validateAccessForms";
 import { Router } from "next/router";
 import { useState } from "react";
 import { useRouter } from "next/navigation";

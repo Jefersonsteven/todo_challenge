@@ -1,7 +1,7 @@
 import { UserLogin } from "@/types";
 import { Button, ButtonBase, FormControl, InputLabel, TextField } from "@mui/material";
 import { Dispatch } from "react";
-import { validateLoginForm } from "@/utils/validateForms";
+import { validateLoginForm } from "@/utils/validateAccessForms";
 
 interface Props {
     form: UserLogin

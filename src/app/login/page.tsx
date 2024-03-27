@@ -1,7 +1,7 @@
 'use client'
 import { LoginForm } from "@/components/LoginForm";
 import { UserLogin } from "@/types";
-import { validateLoginForm } from "@/utils/validateForms";
+import { validateLoginForm } from "@/utils/validateAccessForms";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Cookies from 'js-cookie'
