@@ -3,7 +3,6 @@ import { Dispatch, SetStateAction, useState } from "react"
 import { Difficulty, ErrorsTodoCreate, Priority, Todo, TodoCreate, Token, User } from "@/types"
 import { PortraitSelect } from "./PortraitSelect"
 import { validateTodoForm } from "@/utils/validateTodoForm"
-import Cookies from "js-cookie"
 import { useStoreTodo } from "@/store"
 import getToken from "@/utils/getToken"
 import { getUser } from "@/utils/getUser"
@@ -38,10 +37,9 @@ export const TodoForm: React.FC<Props> = ({ closeForm, todoForm }) => {
 
     const handleSumbit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const dataToken = Cookies.get('token')
-        const token: Token = JSON.parse(dataToken || '{}')
+        const token: Token | null = getToken()
         const dataUser = localStorage.getItem('user')
-        const user: User = JSON.parse(dataUser || '{}')
+        const user: User | null = getUser()
         if (!token || !user) return
         const isValid = validateTodoForm({ form, setErrors })
         if (!isValid) return
@@ -61,7 +59,6 @@ export const TodoForm: React.FC<Props> = ({ closeForm, todoForm }) => {
         if (data.id) {
             const token = getToken()
             const user = getUser()
-
             if (!token || !user) return
             setTodos(user.id, token.token)
             closeForm(false)

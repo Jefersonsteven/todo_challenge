@@ -7,10 +7,14 @@ import { useEffect, useState } from "react";
 import '@/app/styles/animations/animations.css'
 import { Todos } from "@/components/Todos";
 import { useStoreTodo } from "@/store";
+import { getUser } from "@/utils/getUser";
+import { User } from "@/types";
 
 const HomePage: React.FC = () => {
-    const [firstname, lastname] = ['John', 'Doe']
+    const user = getUser()
     const [openFormTodo, setOpenFormTodo] = useState(false)
+    const [openDetailTodo, setOpenDetailTodo] = useState(false)
+    const [openEditTodo, setOpenEditTodo] = useState(false)
 
     return (
         <>
@@ -19,7 +23,7 @@ const HomePage: React.FC = () => {
 
             {/* Main content */}
             <main className=" p-8 flex flex-col gap-4">
-                <h1 className=" font-bold text-4xl">Hello😊!! {firstname} {lastname}.</h1>
+                <h1 className=" font-bold text-4xl">Hello😊!! {user?.first_name} {user?.last_name}.</h1>
                 <div className="w-full flex justify-end">
                     <Button
                         onClick={() => setOpenFormTodo(true)}

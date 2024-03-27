@@ -2,7 +2,6 @@ import { useStoreTodo } from "@/store"
 import { Todo } from "@/types"
 import Image from "next/image"
 import { useEffect } from "react"
-import Cookies from "js-cookie"
 import getToken from "@/utils/getToken"
 import { getUser } from "@/utils/getUser"
 
@@ -62,10 +61,10 @@ export const Todos = () => {
     }, [setTodos])
 
     return (
-        <div className="">
+        <section className="flex gap-8 flex-wrap">
             {todos.map(todo => (
                 <TodoItem key={todo.id} todo={todo} />
             ))}
-        </div>
+        </section>
     )
 }
