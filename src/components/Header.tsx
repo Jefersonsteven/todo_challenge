@@ -1,8 +1,8 @@
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Settings } from './Settings';
+import { ImageProfile } from './ImageProfile';
 
 export const Header: React.FC = () => {
     const [openSettings, setOpenSettings] = useState(false);
@@ -16,7 +16,7 @@ export const Header: React.FC = () => {
                 onClick={() => setOpenSettings(!openSettings)}
                 className='w-11 h-11 rounded-full cursor-pointer border-4 border-gray-800 relative'
             >
-                <Image className='rounded-full' src="/assets/images/user_default.jpeg" alt="profile" width={415} height={415} />
+                <ImageProfile />
                 {openSettings && <Settings />}
             </figure>
         </header>
