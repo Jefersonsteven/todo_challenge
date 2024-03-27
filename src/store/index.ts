@@ -15,6 +15,7 @@ const useStoreUser = create((set) => ({
 interface TodoState {
   todos: Todos;
   setTodos: (id: uuid, token: string) => void;
+  updateTodos: (todos: Todos) => void;
 }
 
 const useStoreTodo = create<TodoState>((set) => ({
@@ -23,6 +24,7 @@ const useStoreTodo = create<TodoState>((set) => ({
     const todos = await getTodos(id, token);
     return set({ todos });
   },
+  updateTodos: (todos: Todos) => set({ todos }),
 }));
 
 export { useStoreUser, useStoreTodo };
