@@ -30,7 +30,7 @@ export const PortraitSelect: React.FC<Props> = ({ form, setForm, setErrors, erro
                 <Image onClick={handleSelectImage} title="Home" className={` cursor-pointer rounded-xl ${form.portrait === 'home.jpeg' ? 'border-4 border-green-500' : ''}`} src='/assets/images/home.jpeg' alt="home" width={100} height={100} />
                 <Image onClick={handleSelectImage} title="Finance" className={` cursor-pointer rounded-xl ${form.portrait === 'finance.jpeg' ? 'border-4 border-green-500' : ''}`} src='/assets/images/finance.jpeg' alt="finance" width={100} height={100} />
             </div>
-            <span>{error}</span>
+            <span className="text-red-500">{error}</span>
         </label>
     )
 }

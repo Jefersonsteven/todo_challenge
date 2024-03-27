@@ -22,6 +22,7 @@ interface User extends UserCreate {
   is_admin: boolean;
   created_at: Date;
   updated_at: Date;
+  id: uuid;
 }
 
 type Users = User[];
@@ -41,6 +42,7 @@ interface TodoCreate extends TodoBase {
 interface Todo extends TodoCreate {
   id: uuid;
   completed: boolean;
+  user_id: uuid;
 }
 
 type Todos = Todo[];
@@ -66,6 +68,11 @@ interface ErrorsTodoCreate {
   portrait: string;
 }
 
+interface Token {
+  token: string;
+  user: string;
+}
+
 export {
   UserBase,
   UserLogin,
@@ -80,4 +87,5 @@ export {
   Difficulty,
   uuid,
   ErrorsTodoCreate,
+  Token,
 };

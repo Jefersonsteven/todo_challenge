@@ -1,8 +1,9 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, TextareaAutosize } from "@mui/material"
+import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material"
 import { Dispatch, SetStateAction, useState } from "react"
-import { Difficulty, ErrorsTodoCreate, Priority, TodoCreate } from "@/types"
-import Image from "next/image"
+import { Difficulty, ErrorsTodoCreate, Priority, Todo, TodoCreate, Token, User } from "@/types"
 import { PortraitSelect } from "./PortraitSelect"
+import { validateTodoForm } from "@/utils/validateTodoForm"
+import Cookies from "js-cookie"
 
 interface Props {
     closeForm: Dispatch<SetStateAction<boolean>>
@@ -31,18 +32,45 @@ export const TodoForm: React.FC<Props> = ({ closeForm, todoForm }) => {
     })
 
 
-    const handleSumbit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSumbit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        // TODO: Validate form
+        const dataToken = Cookies.get('token')
+        const token: Token = JSON.parse(dataToken || '{}')
+        const dataUser = localStorage.getItem('user')
+        const user: User = JSON.parse(dataUser || '{}')
+        if (!token || !user) return
+        const isValid = validateTodoForm({ form, setErrors })
+        if (!isValid) return
 
-        // TODO: Send form to backend
 
-        // finally
-        closeForm(false)
+
+        const response = await fetch(`/api/v1/todo/${user.id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token.token}`,
+            },
+            body: JSON.stringify(form)
+        })
+        const data: Todo = await response.json()
+
+        if (data.id) {
+            closeForm(false)
+        }
+
+        setErrors({
+            title: 'Not created',
+            description: '',
+            priority: '',
+            difficulty: '',
+            target_date: '',
+            portrait: ''
+
+        })
     }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        // TODO: Validate form
+        validateTodoForm({ form, setErrors })
 
         setForm({
             ...form,
@@ -78,6 +106,7 @@ export const TodoForm: React.FC<Props> = ({ closeForm, todoForm }) => {
                 label="Title"
                 variant="outlined"
                 onChange={handleInputChange}
+                error={Boolean(errors.title)}
                 helperText={errors.title}
             />
 
@@ -141,6 +170,12 @@ export const TodoForm: React.FC<Props> = ({ closeForm, todoForm }) => {
             </div>
 
             <PortraitSelect form={form} setForm={setForm} setErrors={setErrors} error={errors.portrait} />
+
+            <div className="flex flex-col gap-2">
+                <span className="text-red-500">{errors.target_date}</span>
+                <span className="text-red-500">{errors.priority}</span>
+                <span className="text-red-500">{errors.difficulty}</span>
+            </div>
 
             <Button type="submit" className="flex gap-2">
                 {todoForm ? 'Edit Todo' : 'Create Todo'}
