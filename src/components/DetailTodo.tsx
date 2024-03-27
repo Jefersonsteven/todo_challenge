@@ -1,10 +1,10 @@
 import { Box, Button, Modal } from "@mui/material"
 import { TodoForm } from "./TodoForm"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { Todo } from "@/types"
 import Image from "next/image"
 import Checkbox from '@mui/material/Checkbox';
-import { updateTodo } from "@/utils/fetching"
+import { deleteTodo, updateTodo } from "@/utils/fetching"
 import getToken from "@/utils/getToken"
 import { useStoreTodo } from "@/store"
 import { getUser } from "@/utils/getUser"
@@ -28,6 +28,18 @@ export const DetailTodo = ({ todo }: Props) => {
 
             if (!todoUpdated) {
                 updateTodos(todos.map(t => t.id === todo.id ? { ...t, completed: !t.completed } : t))
+            }
+        }
+    }
+
+    async function handleDelete() {
+        const token = getToken()
+        const user = getUser()
+        if (token && todo && user) {
+            updateTodos(todos.filter(t => t.id !== todo.id))
+            const deletedTodo = await deleteTodo(token.token, todo)
+            if (!deletedTodo) {
+                setTodos(user.id, token.token)
             }
         }
     }
@@ -64,7 +76,13 @@ export const DetailTodo = ({ todo }: Props) => {
                 <p className="text-gray-500 font-bold">Created at: {todo && new Date(todo?.created_at).toDateString()}</p>
                 <p className="text-gray-500 font-bold">Difficulty: {todo?.difficulty}</p>
                 <p className="text-gray-500 font-bold">Priority: {todo?.priority}</p>
-                <div className="flex justify-end w-full">
+                <div className="flex justify-between w-full">
+                    <Button
+                        color="error"
+                        onClick={handleDelete}
+                    >
+                        Delete
+                    </Button>
                     <Button
                         color="primary"
                         onClick={() => setOpenEditTodo(true)}

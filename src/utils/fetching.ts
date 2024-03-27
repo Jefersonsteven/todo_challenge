@@ -54,4 +54,16 @@ const updateTodo = async (token: string, todo: Todo) => {
   return data;
 };
 
-export { getUser, getTodos, createTodo, updateTodo };
+const deleteTodo = async (token: string, todo: Todo) => {
+  const response = await fetch(`/api/v1/todo/${todo.id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data: Todo = await response.json();
+  return data;
+};
+
+export { getUser, getTodos, createTodo, updateTodo, deleteTodo };
