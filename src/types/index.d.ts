@@ -57,6 +57,15 @@ enum Difficulty {
   Hard = 3,
 }
 
+interface ErrorsTodoCreate {
+  title: string;
+  description: string;
+  priority: string;
+  difficulty: string;
+  target_date: string;
+  portrait: string;
+}
+
 export {
   UserBase,
   UserLogin,
@@ -70,4 +79,5 @@ export {
   Priority,
   Difficulty,
   uuid,
+  ErrorsTodoCreate,
 };

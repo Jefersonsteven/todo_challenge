@@ -1,6 +1,8 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, TextareaAutosize } from "@mui/material"
 import { Dispatch, SetStateAction, useState } from "react"
-import { Difficulty, Priority, TodoCreate } from "@/types"
+import { Difficulty, ErrorsTodoCreate, Priority, TodoCreate } from "@/types"
+import Image from "next/image"
+import { PortraitSelect } from "./PortraitSelect"
 
 interface Props {
     closeForm: Dispatch<SetStateAction<boolean>>
@@ -19,6 +21,15 @@ const newTodo: TodoCreate = {
 
 export const TodoForm: React.FC<Props> = ({ closeForm, todoForm }) => {
     const [form, setForm] = useState<TodoCreate>(todoForm || newTodo)
+    const [errors, setErrors] = useState<ErrorsTodoCreate>({
+        title: '',
+        description: '',
+        priority: '',
+        difficulty: '',
+        target_date: '',
+        portrait: ''
+    })
+
 
     const handleSumbit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -67,18 +78,24 @@ export const TodoForm: React.FC<Props> = ({ closeForm, todoForm }) => {
                 label="Title"
                 variant="outlined"
                 onChange={handleInputChange}
-                helperText={""}
+                helperText={errors.title}
             />
 
             <div className="flex flex-col gap-2">
-                <InputLabel id="description">Description</InputLabel>
-                <textarea
+                <TextField
                     id="description"
-                    className=" text-xl border-gray-300 bg-transparent"
-                    rows={3}
+                    label="Description"
+                    multiline
+                    rows={4}
                     value={form.description}
                     onChange={handleInputChange}
-                ></textarea>
+                    variant="outlined"
+                    error={Boolean(errors.description)}
+                    helperText={errors.description}
+                >
+
+                </TextField>
+                <span>{errors.description}</span>
             </div>
 
             <div className="flex gap-4">
@@ -123,6 +140,7 @@ export const TodoForm: React.FC<Props> = ({ closeForm, todoForm }) => {
                 </FormControl>
             </div>
 
+            <PortraitSelect form={form} setForm={setForm} setErrors={setErrors} error={errors.portrait} />
 
             <Button type="submit" className="flex gap-2">
                 {todoForm ? 'Edit Todo' : 'Create Todo'}
