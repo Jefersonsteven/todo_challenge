@@ -4,6 +4,9 @@ import { Difficulty, ErrorsTodoCreate, Priority, Todo, TodoCreate, Token, User }
 import { PortraitSelect } from "./PortraitSelect"
 import { validateTodoForm } from "@/utils/validateTodoForm"
 import Cookies from "js-cookie"
+import { useStoreTodo } from "@/store"
+import getToken from "@/utils/getToken"
+import { getUser } from "@/utils/getUser"
 
 interface Props {
     closeForm: Dispatch<SetStateAction<boolean>>
@@ -21,6 +24,7 @@ const newTodo: TodoCreate = {
 }
 
 export const TodoForm: React.FC<Props> = ({ closeForm, todoForm }) => {
+    const setTodos = useStoreTodo(state => state.setTodos)
     const [form, setForm] = useState<TodoCreate>(todoForm || newTodo)
     const [errors, setErrors] = useState<ErrorsTodoCreate>({
         title: '',
@@ -55,6 +59,11 @@ export const TodoForm: React.FC<Props> = ({ closeForm, todoForm }) => {
         const data: Todo = await response.json()
 
         if (data.id) {
+            const token = getToken()
+            const user = getUser()
+
+            if (!token || !user) return
+            setTodos(user.id, token.token)
             closeForm(false)
         }
 
