@@ -3,12 +3,15 @@ import { TodoForm } from "@/components/TodoForm";
 import { Header } from "@/components/Header"
 import AddIcon from '@mui/icons-material/Add';
 import { Box, Button, Modal } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import '@/app/styles/animations/animations.css'
+import { Todos } from "@/components/Todos";
+import { useStoreTodo } from "@/store";
 
 const HomePage: React.FC = () => {
     const [firstname, lastname] = ['John', 'Doe']
     const [openFormTodo, setOpenFormTodo] = useState(false)
+
     return (
         <>
             {/* Header component is used here */}
@@ -27,7 +30,7 @@ const HomePage: React.FC = () => {
                     </Button>
                 </div>
 
-                {/* TODO: Todos component is used here */}
+                <Todos />
             </main>
 
             {/* Modals */}

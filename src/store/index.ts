@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
-import { Todo, User } from "../types";
-import { getUser } from "@/utils/fetching";
+import { Todos, User, uuid } from "../types";
+import { getTodos, getUser } from "@/utils/fetching";
 
 const useStoreUser = create((set) => ({
   user: null,
@@ -12,9 +12,17 @@ const useStoreUser = create((set) => ({
   updateUser: (user: User) => set({ user }),
 }));
 
-const useStoreTodo = create((set) => ({
+interface TodoState {
+  todos: Todos;
+  setTodos: (id: uuid, token: string) => void;
+}
+
+const useStoreTodo = create<TodoState>((set) => ({
   todos: [],
-  setTodos: (todos: Todo) => set({ todos }),
+  setTodos: async (id: uuid, token: string) => {
+    const todos = await getTodos(id, token);
+    return set({ todos });
+  },
 }));
 
 export { useStoreUser, useStoreTodo };

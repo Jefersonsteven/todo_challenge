@@ -1,4 +1,6 @@
-type uuid = "0000-0000-0000-0000";
+import { UUID } from "crypto";
+
+type uuid = UUID;
 
 interface UserBase {
   email: string;
@@ -43,6 +45,7 @@ interface Todo extends TodoCreate {
   id: uuid;
   completed: boolean;
   user_id: uuid;
+  created_at: Date;
 }
 
 type Todos = Todo[];

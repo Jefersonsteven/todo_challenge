@@ -1,14 +1,12 @@
-interface Token {
-  access_token: string;
-  token_type: string;
-  user: string;
-}
+import { Token } from "@/types";
+import Cookies from "js-cookie";
 
 const getToken = () => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    return JSON.parse(token) as Token;
-  }
+  const data = Cookies.get("token");
+  const token: Token | undefined = data ? JSON.parse(data) : undefined;
+
+  if (token) return token;
+  return null;
 };
 
 export default getToken;
