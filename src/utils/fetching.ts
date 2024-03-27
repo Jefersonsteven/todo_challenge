@@ -1,4 +1,4 @@
-import { User, uuid } from "@/types";
+import { Todo, TodoCreate, User, uuid } from "@/types";
 
 const getUser = async (email: string, token: string): Promise<User> => {
   const response = await fetch(`/api/v1/users/${email}`, {
@@ -28,4 +28,30 @@ const getTodos = async (id: uuid, token: string) => {
   return todos;
 };
 
-export { getUser, getTodos };
+const createTodo = async (userId: uuid, token: string, todo: TodoCreate) => {
+  const response = await fetch(`/api/v1/todo/${userId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(todo),
+  });
+  const data: Todo = await response.json();
+  return data;
+};
+
+const updateTodo = async (token: string, todo: Todo) => {
+  const response = await fetch(`/api/v1/todo/${todo.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(todo),
+  });
+  const data: Todo = await response.json();
+  return data;
+};
+
+export { getUser, getTodos, createTodo, updateTodo };

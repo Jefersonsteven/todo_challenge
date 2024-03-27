@@ -6,10 +6,12 @@ import { validateTodoForm } from "@/utils/validateTodoForm"
 import { useStoreTodo } from "@/store"
 import getToken from "@/utils/getToken"
 import { getUser } from "@/utils/getUser"
+import { createTodo, updateTodo } from "@/utils/fetching"
 
 interface Props {
     closeForm: Dispatch<SetStateAction<boolean>>
     todoForm?: TodoCreate
+    edit?: boolean
 }
 
 
@@ -22,9 +24,9 @@ const newTodo: TodoCreate = {
     portrait: ''
 }
 
-export const TodoForm: React.FC<Props> = ({ closeForm, todoForm }) => {
+export const TodoForm: React.FC<Props> = ({ closeForm, todoForm, edit }) => {
     const setTodos = useStoreTodo(state => state.setTodos)
-    const [form, setForm] = useState<TodoCreate>(todoForm || newTodo)
+    const [form, setForm] = useState<TodoCreate | Todo>(todoForm || newTodo)
     const [errors, setErrors] = useState<ErrorsTodoCreate>({
         title: '',
         description: '',
@@ -38,31 +40,30 @@ export const TodoForm: React.FC<Props> = ({ closeForm, todoForm }) => {
     const handleSumbit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const token: Token | null = getToken()
-        const dataUser = localStorage.getItem('user')
         const user: User | null = getUser()
         if (!token || !user) return
         const isValid = validateTodoForm({ form, setErrors })
         if (!isValid) return
 
-
-
-        const response = await fetch(`/api/v1/todo/${user.id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token.token}`,
-            },
-            body: JSON.stringify(form)
-        })
-        const data: Todo = await response.json()
-
-        if (data.id) {
-            const token = getToken()
-            const user = getUser()
-            if (!token || !user) return
-            setTodos(user.id, token.token)
-            closeForm(false)
+        function isSuccessful(id: string | undefined) {
+            if (id) {
+                const token = getToken()
+                const user = getUser()
+                if (!token || !user) return
+                setTodos(user.id, token.token)
+                closeForm(false)
+                return
+            }
         }
+
+        if (edit) {
+            const editedTodo = await updateTodo(token.token, form as Todo)
+            isSuccessful(editedTodo.id)
+        } else {
+            const newTodo = await createTodo(user.id, token.token, form as TodoCreate)
+            isSuccessful(newTodo.id)
+        }
+
 
         setErrors({
             title: 'Not created',
@@ -71,7 +72,6 @@ export const TodoForm: React.FC<Props> = ({ closeForm, todoForm }) => {
             difficulty: '',
             target_date: '',
             portrait: ''
-
         })
     }
 
@@ -183,9 +183,17 @@ export const TodoForm: React.FC<Props> = ({ closeForm, todoForm }) => {
                 <span className="text-red-500">{errors.difficulty}</span>
             </div>
 
-            <Button type="submit" className="flex gap-2">
-                {todoForm ? 'Edit Todo' : 'Create Todo'}
-            </Button>
+            <div className="flex w-full justify-between">
+                <Button
+                    onClick={() => closeForm(false)}
+                    color="error"
+                >
+                    Cancel
+                </Button>
+                <Button type="submit" className="flex gap-2">
+                    {todoForm ? 'Edit Todo' : 'Create Todo'}
+                </Button>
+            </div>
 
         </form>
     )

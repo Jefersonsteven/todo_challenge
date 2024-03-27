@@ -14,7 +14,6 @@ const HomePage: React.FC = () => {
     const user = getUser()
     const [openFormTodo, setOpenFormTodo] = useState(false)
     const [openDetailTodo, setOpenDetailTodo] = useState(false)
-    const [openEditTodo, setOpenEditTodo] = useState(false)
 
     return (
         <>
@@ -51,8 +50,6 @@ const HomePage: React.FC = () => {
                     <TodoForm closeForm={setOpenFormTodo} />
                 </Box>
             </Modal>
-
-            {/* TODO: DetailTodo component modal is used here */}
 
             {/* TODO: EditProfile component modal is used here */}
         </>
