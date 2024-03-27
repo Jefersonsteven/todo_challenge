@@ -31,7 +31,11 @@ const TodoItem = ({ todo }: Props) => {
                 <main className=" flex flex-col gap-4 p-4 absolute top-0 left-0 h-full w-full">
                     <section className="flex justify-between">
                         <span className="text-gray-500">{created_at.toDateString()}</span>
-                        <span className="p-1 bg-gray-800 text-white rounded-md">{todo.completed ? "Completed" : "Pending"}</span>
+                        <span
+                            className={`p-1 text-white rounded-md ${todo.completed ? "bg-green-500" : "bg-gray-800"}`}
+                        >
+                            {todo.completed ? "Completed" : "Pending"}
+                        </span>
                     </section>
                     <section className=" flex flex-col gap-4">
                         <h2 className="font-bold text-xl text-gray-800">{todo.title}</h2>
