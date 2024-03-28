@@ -6,14 +6,16 @@ import { Box, Button, Modal } from "@mui/material";
 import { useEffect, useState } from "react";
 import '@/app/styles/animations/animations.css'
 import { Todos } from "@/components/Todos";
-import { useStoreTodo } from "@/store";
 import { getUser } from "@/utils/getUser";
 import { User } from "@/types";
 
 const HomePage: React.FC = () => {
-    const user = getUser()
+    const [user, setUser] = useState<User | null>(null)
     const [openFormTodo, setOpenFormTodo] = useState(false)
-    const [openDetailTodo, setOpenDetailTodo] = useState(false)
+
+    useEffect(() => {
+        setUser(getUser())
+    }, [])
 
     return (
         <>
@@ -36,7 +38,6 @@ const HomePage: React.FC = () => {
                 <Todos />
             </main>
 
-            {/* Modals */}
 
             {/* CreateTodoForm component modal is used here */}
             <Modal
@@ -50,8 +51,6 @@ const HomePage: React.FC = () => {
                     <TodoForm closeForm={setOpenFormTodo} />
                 </Box>
             </Modal>
-
-            {/* TODO: EditProfile component modal is used here */}
         </>
     )
 }

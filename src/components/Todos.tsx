@@ -19,7 +19,14 @@ const TodoItem = ({ todo }: Props) => {
         <>
             <article
                 onClick={() => setOpenDetailTodo(true)}
-                className="relative h-full max-w-96 max-h-48 overflow-hidden rounded-xl bg-slate-300 border-2 border-gray-800 cursor-pointer hover:shadow-lg hover:scale-105 transition-all"
+                className={`
+                   ${todo.completed ? "border-e-green-500" : "border-gray-800"}
+                    relative h-full 
+                    max-w-96 max-h-48 overflow-hidden 
+                    rounded-xl bg-slate-300 border-2 
+                   cursor-pointer 
+                    hover:shadow-lg hover:scale-105 transition-all
+                `}
             >
                 <Image
                     src={`/assets/images/${todo.portrait}`}
@@ -45,7 +52,7 @@ const TodoItem = ({ todo }: Props) => {
                 </main>
             </article>
 
-            {/* TODO: DetailTodo component modal is used here */}
+            {/* DetailTodo component modal is used here */}
             <Modal
                 open={openDetailTodo}
                 onClose={() => setOpenDetailTodo(false)}
@@ -61,19 +68,6 @@ const TodoItem = ({ todo }: Props) => {
     )
 }
 
-
-const todoPreview: Todo = {
-    "title": "Ir al parque",
-    "description": "Ir al parque y hacer un poco de meditación",
-    "completed": false,
-    "portrait": "personal.jpeg",
-    "difficulty": 1,
-    "user_id": "49ce2933-e8f7-4d83-8ac3-33daa3442658",
-    "id": "1c43b4c6-71a7-4412-afab-b768efaf1785",
-    "target_date": new Date("2024-03-31T00:00:00"),
-    "priority": 2,
-    "created_at": new Date("2024-03-27T12:52:33.157417")
-}
 
 export const Todos = () => {
     const todos = useStoreTodo(state => state.todos)
