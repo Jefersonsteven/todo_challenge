@@ -10,9 +10,7 @@ body {
   @apply w-full max-w-7xl h-screen text-gray-900 bg-stone-50 margin-0-auto font-mono;
 }
 
-input,
-textarea,
-select {
+:is(input, textarea, select) {
   @apply w-full p-2 border border-gray-900 rounded-md;
 }
 
