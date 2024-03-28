@@ -28,7 +28,7 @@ const HomePage: React.FC = () => {
                 <div className="w-full flex justify-end">
                     <Button
                         onClick={() => setOpenFormTodo(true)}
-                        className="flex gap-2"
+                        className="flex gap-2 btn-primary"
                     >
                         Create New Todochallenge
                         <AddIcon />

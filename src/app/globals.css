@@ -17,3 +17,17 @@ body {
 form {
   @apply w-full max-w-2xl p-4 flex flex-col gap-4;
 }
+
+.btn {
+  @apply py-2 px-4 rounded-3xl font-bold;
+}
+
+:is(.btn-primary, .btn-secondary) {
+  @apply btn;
+  border: 2px solid #2563eb;
+}
+
+.btn-danger {
+  @apply btn;
+  border: 2px solid #e53e3e;
+}

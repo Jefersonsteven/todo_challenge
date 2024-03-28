@@ -81,12 +81,14 @@ export const DetailTodo = ({ todo }: Props) => {
                 <p className="text-gray-500 font-bold">Priority: {todo?.priority}</p>
                 <div className="flex justify-between w-full">
                     <Button
+                        className="btn-danger"
                         color="error"
                         onClick={handleDelete}
                     >
                         Delete
                     </Button>
                     <Button
+                        className="btn-primary"
                         color="primary"
                         onClick={() => setOpenEditTodo(true)}
                     >

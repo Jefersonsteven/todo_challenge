@@ -187,10 +187,11 @@ export const TodoForm: React.FC<Props> = ({ closeForm, todoForm, edit }) => {
                 <Button
                     onClick={() => closeForm(false)}
                     color="error"
+                    className="btn-danger"
                 >
                     Cancel
                 </Button>
-                <Button type="submit" className="flex gap-2">
+                <Button type="submit" className="flex gap-2 btn-primary">
                     {todoForm ? 'Edit Todo' : 'Create Todo'}
                 </Button>
             </div>
