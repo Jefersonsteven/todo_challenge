@@ -37,6 +37,7 @@ export const LoginForm: React.FC<Props> = ({ form, setForm, handleSubmit, errors
                 onChange={handleInputChange}
                 helperText={errors.username}
                 error={Boolean(errors.username)}
+                required
             />
             <TextField
                 type="password"
@@ -47,6 +48,7 @@ export const LoginForm: React.FC<Props> = ({ form, setForm, handleSubmit, errors
                 onChange={handleInputChange}
                 helperText={errors.password}
                 error={Boolean(errors.password)}
+                required
             />
 
             <Button type="submit">Log in</Button>

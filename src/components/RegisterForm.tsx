@@ -43,6 +43,7 @@ export const RegisterForm = ({
                 onChange={handleInputChange}
                 helperText={errors.email}
                 error={Boolean(errors.email)}
+                required
             />
             <TextField
                 type="password"
@@ -53,6 +54,7 @@ export const RegisterForm = ({
                 onChange={handleInputChange}
                 helperText={errors.password}
                 error={Boolean(errors.password)}
+                required
             />
             <TextField
                 type="text"
@@ -63,6 +65,7 @@ export const RegisterForm = ({
                 onChange={handleInputChange}
                 helperText={errors.first_name}
                 error={Boolean(errors.first_name)}
+                required
             />
             <TextField
                 type="text"
@@ -73,6 +76,7 @@ export const RegisterForm = ({
                 onChange={handleInputChange}
                 helperText={errors.last_name}
                 error={Boolean(errors.last_name)}
+                required
             />
 
             <Button type="submit">Register</Button>

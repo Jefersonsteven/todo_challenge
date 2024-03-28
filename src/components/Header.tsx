@@ -33,7 +33,7 @@ export const Header: React.FC = () => {
                 className="flex justify-end items-start backdrop-blur-sm pt-8"
             >
                 <Box className=" p-8 bg-stone-50 rounded-s-3xl animate-slide-left">
-                    <EditProfile />
+                    <EditProfile setOpenEditProfile={setOpenEditProfile} />
                 </Box>
             </Modal>
         </header>
