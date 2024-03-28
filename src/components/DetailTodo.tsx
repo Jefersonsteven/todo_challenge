@@ -28,7 +28,10 @@ export const DetailTodo = ({ todo }: Props) => {
 
             if (!todoUpdated) {
                 updateTodos(todos.map(t => t.id === todo.id ? { ...t, completed: !t.completed } : t))
+                return
             }
+
+            setTodos(user.id, token.token)
         }
     }
 
